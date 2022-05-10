@@ -5,11 +5,12 @@ Installation:
 First clone the repositopry and set up your python environment.
 This is done with the following terminal commands:
 
+```
 git clone https://github.com/BeSuter/UltrasoundImageAnalyser.git
 cd UltrasoundImageAnalyser
 
 conda env create -f environment.yml
 conda env list
 conda activate img_analyzer
-
+```
 
