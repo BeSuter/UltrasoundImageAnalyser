@@ -2,7 +2,7 @@
 This repository contains a small python script capable of analyzing the distribution of pixel values from a defined area of the image.
 
 ## Installation:
-First clone the repositopry and set up your python environment.
+First clone the repository and set up your python environment.
 This is done with the following terminal commands:
 
 ```
@@ -13,4 +13,17 @@ conda env create -f environment.yml
 conda env list
 conda activate img_analyzer
 ```
+
+Add all the images you ant to analyze to the UltrasoundImageAnalyser folder. Done! Now you are ready to analyze your images :D
+
+## Example: 
+Assume that you added the following images to the UltrasoundImageAnalyser folder: img1.jpeg, img2.jpeg, img3.png
+
+Run the image analyzer with the following terminal command:
+```
+python us_image_analyzer.py --image img1.jpeg, img2.jpeg, img3.png
+```
+
+In case all the histograms annoy you, add "--NOplot" to the command ;)
+
 
