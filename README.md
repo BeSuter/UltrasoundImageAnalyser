@@ -26,4 +26,11 @@ python us_image_analyzer.py --image img1.jpeg, img2.jpeg, img3.png
 
 In case all the histograms annoy you, add "--NOplot" to the command ;)
 
+Keyboard commands while cropping the image:
+```
+r --> undo whatever you did
+k --> confirm and visualize the cropped area of the image (you can still undo this step by pressing 'r')
+c --> calculate statistics. This can not be undone. Will automatically prompt the next image or the final statistical analysis. 
+```
+
 
