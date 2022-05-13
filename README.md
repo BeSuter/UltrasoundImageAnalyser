@@ -21,7 +21,7 @@ Assume that you added the following images to the UltrasoundImageAnalyser folder
 
 Run the image analyzer with the following terminal command in order to get the average pixel brightness of the three images:
 ```
-python us_image_analyzer.py --image img1.jpeg, img2.jpeg, img3.png
+python us_image_analyzer.py --image img1.jpeg img2.jpeg img3.png
 ```
 
 In case all the histograms annoy you, add "--NOplot" to the command ;)
