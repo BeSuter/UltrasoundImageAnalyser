@@ -25,6 +25,8 @@ def click_and_crop(event, x, y, flags, param):
 
 if __name__ == '__main__':
     all_results = []
+    all_max = []
+    all_min = []
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-i",
@@ -74,6 +76,8 @@ if __name__ == '__main__':
                                                     mask=np.logical_not(mask_array)).flatten()
                 mean = np.mean(masked_grey_array)
                 std = np.std(masked_grey_array)
+                min = np.min(masked_grey_array)
+                max = np.max(masked_grey_array)
                 hist = cv2.calcHist([all_images[0]], [0], mask_array, [256], [0, 256])
                 # print(round(mean, 2), " , ", round(np.std(masked_grey_array), 2))
                 mm, ss = cv2.meanStdDev(all_images[0], mask=mask_array)
@@ -86,6 +90,8 @@ if __name__ == '__main__':
                 print("Mean pixel value: ", round(mean, 2),
                       ", standard deviation is: +/- ",
                       round(std, 2))
+                print("Max pixel value: ", round(max, 2),
+                      ", min pixel value: ", round(min,2))
                 if args["NOplot"]:
                     print("Plotting pixel histogram...")
                     plt.figure()
@@ -99,6 +105,8 @@ if __name__ == '__main__':
         # close all open windows
         cv2.destroyAllWindows()
         all_results.append(mean)
+        all_min.append(min)
+        all_max.append(max)
     print("##############################################################")
     print()
     print("##############################################################")
@@ -106,3 +114,6 @@ if __name__ == '__main__':
     print(f"Mean pixel brightness over all images is: ", round(np.mean(all_results), 2),
           ", standard deviation is: +/- ",
           round(np.std(all_results), 2))
+    print(f"Average max pixel value is {round(np.mean(all_max), 2)} +/- {round(np.std(all_max), 2)}")
+    print(f"Average min pixel value is {round(np.mean(all_min), 2)} +/- {round(np.std(all_min), 2)}")
+    print()
