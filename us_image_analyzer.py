@@ -27,6 +27,8 @@ if __name__ == '__main__':
     all_results = []
     all_max = []
     all_min = []
+    all_area = []
+    PIXEL_AREA = 0.000313
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
     ap.add_argument("-i",
@@ -74,6 +76,7 @@ if __name__ == '__main__':
                 targetROI = all_images[0] * mask
                 masked_grey_array = ma.masked_array(np.asarray(cv2.cvtColor(all_images[0], cv2.COLOR_BGR2GRAY)),
                                                     mask=np.logical_not(mask_array)).flatten()
+                area = cv2.contourArea(np.around(np.array([[pt] for pt in refPt])).astype(np.int32))
                 mean = np.mean(masked_grey_array)
                 std = np.std(masked_grey_array)
                 min = np.min(masked_grey_array)
@@ -87,6 +90,7 @@ if __name__ == '__main__':
             elif key == ord("c"):
                 print("##############################################################")
                 print(f"Single image statistics have been calculated for {img_path}:")
+                print(f"Chosen area was {round(area*PIXEL_AREA, 2)} cm^2")
                 print("Mean pixel value: ", round(mean, 2),
                       ", standard deviation is: +/- ",
                       round(std, 2))
@@ -107,6 +111,7 @@ if __name__ == '__main__':
         all_results.append(mean)
         all_min.append(min)
         all_max.append(max)
+        all_area.append(area)
     print("##############################################################")
     print()
     print("##############################################################")
@@ -116,4 +121,8 @@ if __name__ == '__main__':
           round(np.std(all_results), 2))
     print(f"Average max pixel value is {round(np.mean(all_max), 2)} +/- {round(np.std(all_max), 2)}")
     print(f"Average min pixel value is {round(np.mean(all_min), 2)} +/- {round(np.std(all_min), 2)}")
+    print(f"Average cropped area was {round(np.mean(all_area)*PIXEL_AREA, 2)} "
+          f"+/- {round(np.std(all_area)*PIXEL_AREA, 2)} cm^2")
+    print()
+    print("!!!! Computed area is only approximately correct for images with a depth scale of 7.8 cm !!!!")
     print()
