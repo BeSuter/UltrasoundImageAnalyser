@@ -1,7 +1,9 @@
+import os
 import cv2
 import argparse
 
 import numpy as np
+import pandas as pd
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 
@@ -31,6 +33,17 @@ if __name__ == '__main__':
     PIXEL_AREA = 0.000313
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
+    ap.add_argument("-f",
+                    "--file",
+                    required=False,
+                    default=False,
+                    help="If wanted, please specify the name of the file where to append the values to.")
+    ap.add_argument("-t",
+                    "--time",
+                    required=False,
+                    default=999999999,
+                    help="Specifiy the time point of the analyzed sample. Will be specified in the csv file.",
+                    type=float)
     ap.add_argument("-i",
                     "--image",
                     nargs='+',
@@ -43,6 +56,7 @@ if __name__ == '__main__':
                     help="Flag for plotting image histograms. "
                          "If no plots are desired, set this flag to False by typing --NOplot!")
     args = vars(ap.parse_args())
+
     # load the image, clone it, and setup the mouse callback function
     for img_path in args["image"]:
         all_images = []
@@ -126,3 +140,28 @@ if __name__ == '__main__':
     print()
     print("!!!! Computed area is only approximately correct for images with a depth scale of 7.8 cm !!!!")
     print()
+
+    if args["file"]:
+        print(f"Saving data to {args['file']} file")
+        if args["time"] == 999999999:
+            print("Assuming that no time point was provided")
+            time_point = [np.nan]
+        else:
+            time_point = [args["time"]]
+        df_new = pd.DataFrame({'time': time_point,
+                               'mean': [round(np.mean(all_results), 2)],
+                               'mean_std': [round(np.std(all_results), 2)],
+                               'avg_max_pix': [round(np.mean(all_max), 2)],
+                               'max_pix_std': [round(np.std(all_max), 2)],
+                               'avg_min_pix': [round(np.mean(all_min), 2)],
+                               'min_pix_std': [round(np.std(all_min), 2)],
+                               'avg_area': [round(np.mean(all_area)*PIXEL_AREA, 2)],
+                               'area_std': [round(np.std(all_area)*PIXEL_AREA, 2)],
+                               '#samples': [len(all_results)]})
+        if os.path.exists(args["file"]):
+            df = pd.read_csv(args["file"])
+            df = df.append(df_new, ignore_index=True)
+        else:
+            df = pd.DataFrame(df_new)
+        df = df.sort_values(by=['time'])
+        df.to_csv(args["file"], index=False)
