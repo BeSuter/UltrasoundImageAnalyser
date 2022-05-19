@@ -32,8 +32,11 @@ You can also specify the corresponding time point of your data by adding "--time
 The csv file will be ordered according to the provided time points. 
 
 --file --> If wanted, please specify the name of the file where to append the values to. (Optional)
+
 --time --> Specify the time point of the analyzed sample. Will be specified in the csv file. (Optional)
+
 --image --> Please enter the path to each image you want to analyze
+
 --NOplot --> Flag for plotting image histograms. If no plots are desired, set this flag to False by typing --NOplot! (Optional)
 
 Keyboard commands while cropping the image:
